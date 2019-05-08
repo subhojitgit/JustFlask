@@ -3,14 +3,14 @@ version: 0.2
 phases:
   build:
     commands:
-      - VERSION_NAME=just-flask
-      - REPOSITORY_NAME=JuskFlask
+      - VERSION_NAME=mcd_chat_driver
+      - REPOSITORY_NAME=just-flask
       - 'ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | cut -d : -f 5)'
-      - REPOSITORY=https://github.com/subhojitgit/JustFlask
+      - REPOSITORY=${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}
       - VERSION=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - $(aws ecr get-login --no-include-email --region ${AWS_REGION})
       - docker pull ${REPOSITORY}:latest || true
-      - TAG_ENTRY=just-flask
-      - docker build --cache-from ${REPOSITORY} -t ${TAG_ENTRY} .
+      - docker build --cache-from ${REPOSITORY}:latest -t ${REPOSITORY}:latest -t ${REPOSITORY}:${VERSION} .
       - docker push ${REPOSITORY}
       - 'printf ''{"repository": "%s", "version": "%s"}'' $REPOSITORY $VERSION > version.json'
 
