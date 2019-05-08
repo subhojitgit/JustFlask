@@ -8,7 +8,6 @@ phases:
       - 'ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | cut -d : -f 5)'
       - REPOSITORY=https://github.com/subhojitgit/JustFlask
       - VERSION=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - $(aws ecr get-login --no-include-email --region ${AWS_REGION})
       - docker pull ${REPOSITORY}:latest || true
       - docker build --cache-from ${REPOSITORY}:latest -t ${REPOSITORY}:latest -t ${REPOSITORY}:${VERSION} .
       - docker push ${REPOSITORY}
