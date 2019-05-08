@@ -9,7 +9,8 @@ phases:
       - REPOSITORY=https://github.com/subhojitgit/JustFlask
       - VERSION=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - docker pull ${REPOSITORY}:latest || true
-      - docker build --cache-from ${REPOSITORY}:latest -t ${REPOSITORY}:latest -t ${REPOSITORY}:${VERSION} .
+      - TAG_ENTRY=just-flask
+      - docker build --cache-from ${REPOSITORY}:latest -t ${REPOSITORY}:latest -t ${TAG_ENTRY} .
       - docker push ${REPOSITORY}
       - 'printf ''{"repository": "%s", "version": "%s"}'' $REPOSITORY $VERSION > version.json'
 
