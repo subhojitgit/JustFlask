@@ -6,8 +6,4 @@ RUN pip3 install -r src/flask_app/requirements.txt
 
 ENV PYTHONPATH=/app/src:/app:/app/tst
 
-EXPOSE 5050
-
-ENTRYPOINT ["python3.7", "src/flask_app/app.py"]
-
-CMD ["app.py"]
+CMD python3 ./tst/integ_test.py
